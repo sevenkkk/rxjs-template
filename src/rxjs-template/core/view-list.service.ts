@@ -3,6 +3,9 @@ import { ViewBaseListService } from './base/view-base-list.service';
 import { UseResult } from '../model/use-result.model';
 import { take } from 'rxjs/operators';
 
+/**
+ * 处理http返回列表
+ */
 export abstract class ViewListService<P, T> extends ViewBaseListService<P, T> {
 
   /**

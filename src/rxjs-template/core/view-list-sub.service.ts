@@ -2,6 +2,9 @@ import { ViewListService } from './view-list.service';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+/**
+ * 处理http返回列表（带有子列表）
+ */
 export abstract class ViewListSubService<P, T, S> extends ViewListService <P, T> {
 
   // 索引子index

@@ -2,6 +2,9 @@ import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { LocalStorageUtils } from '../utils/local-storage.utils';
 import { map } from 'rxjs/operators';
 
+/**
+ * 本地类表对象管理
+ */
 export class LocalListService<T> {
 
   private _list$ = new BehaviorSubject<Array<T>>([]);

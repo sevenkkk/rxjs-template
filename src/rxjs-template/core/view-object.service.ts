@@ -3,6 +3,9 @@ import { UseResult } from '../model/use-result.model';
 import { ViewBaseObjectService } from './base/view-base-object.service';
 import { take } from 'rxjs/operators';
 
+/**
+ * 处理http返回对象
+ */
 export abstract class ViewObjectService<P, T> extends ViewBaseObjectService<P, T> {
 
   /**

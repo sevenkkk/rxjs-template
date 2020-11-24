@@ -1,6 +1,12 @@
+import { RxjsTempConfigService } from '../rxjs-temp-config.service';
+
+/**
+ * 本地存储对象
+ */
 export class LocalStorageUtils {
 
-  static version = 'v2';
+  // 版本号
+  static version = `v${RxjsTempConfigService.config?.localVersion || 1}`;
 
   /**
    * 设置对象

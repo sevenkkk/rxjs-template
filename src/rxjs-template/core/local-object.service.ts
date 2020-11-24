@@ -1,6 +1,9 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LocalStorageUtils } from '../utils/local-storage.utils';
 
+/**
+ * 本地对象管理
+ */
 export class LocalObjectService<T> {
 
   private _target$ = new BehaviorSubject<T>(undefined);

@@ -2,6 +2,9 @@ import { Observable } from 'rxjs';
 import { UseResult } from '../model/use-result.model';
 import { ViewBaseObjectService } from './base/view-base-object.service';
 
+/**
+ * 处理http提交
+ */
 export abstract class ViewSubmitService<P, T> extends ViewBaseObjectService<P, T> {
 
   /**

@@ -3,6 +3,9 @@ import { delay, map, tap, withLatestFrom } from 'rxjs/operators';
 import { UseResult } from '../model/use-result.model';
 import { ViewBaseListService } from './base/view-base-list.service';
 
+/**
+ * 处理http返回列表（带有分页）
+ */
 export abstract class ViewMoreListService<P, T> extends ViewBaseListService<P, T> {
 
   private _page = 1;
