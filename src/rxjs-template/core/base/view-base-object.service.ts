@@ -34,10 +34,10 @@ export abstract class ViewBaseObjectService<P, T> extends ViewBaseCommonService<
   }
 
   // 初始化数据
-  initialize() {
+  initialize(): void {
   }
 
-  clear() {
+  clear(): void {
     super.clear();
     if (this.localKey) {
       LocalStorageUtils.removeItem(this.localKey);
@@ -48,7 +48,7 @@ export abstract class ViewBaseObjectService<P, T> extends ViewBaseCommonService<
   /**
    * 获取本地数据
    */
-  private getLocalData() {
+  private getLocalData(): T {
     if (this.localKey) {
       const result = LocalStorageUtils.getCacheItem<T>(this.localKey);
       if (result) {

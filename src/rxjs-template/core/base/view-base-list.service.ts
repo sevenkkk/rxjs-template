@@ -1,7 +1,7 @@
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { ViewState } from '../../model/view-state.model';
-import { ResponseBody, UseResult } from '../../model/response-body.model';
+import { UseResult } from '../../model/use-result.model';
 import { ViewBaseCommonService } from './view-base-common.service';
 import { LocalStorageUtils } from '../../utils/local-storage.utils';
 
@@ -41,7 +41,7 @@ export abstract class ViewBaseListService<P, T> extends ViewBaseCommonService<P>
     this._index$.next(index);
   }
 
-  get index() {
+  get index(): number {
     return this._index$.getValue();
   }
 
@@ -82,13 +82,13 @@ export abstract class ViewBaseListService<P, T> extends ViewBaseCommonService<P>
   }
 
   // 初始化数据
-  initialize() {
+  initialize(): void {
   }
 
   /**
    * 定义api请求
    */
-  abstract prepare(): Observable<ResponseBody>;
+  abstract prepare(): Observable<any>;
 
   /**
    * 请求数据
@@ -104,7 +104,7 @@ export abstract class ViewBaseListService<P, T> extends ViewBaseCommonService<P>
   /**
    * 清空缓冲数据
    */
-  clear() {
+  clear(): void {
     super.clear();
     this._list$.next([]);
     if (this.localKey) {
@@ -113,32 +113,9 @@ export abstract class ViewBaseListService<P, T> extends ViewBaseCommonService<P>
   }
 
   /**
-   * 获取当前数据
-   * @param item 原储存数据
-   */
-  private getCurrentData(item: Array<T>) {
-    let _item = item;
-    if (item.length === 0) {
-      if (this.localKey) {
-        const result = LocalStorageUtils.getCacheItem<Array<T>>(this.localKey);
-        if (result) {
-          const {startTime, data} = result;
-          this.startTime = startTime;
-          _item = data;
-        } else {
-          _item = this._defaultValue;
-        }
-      } else {
-        _item = this._defaultValue;
-      }
-    }
-    return _item;
-  }
-
-  /**
    * 获取本地数据
    */
-  private getLocalData() {
+  private getLocalData(): Array<T> {
     if (this.localKey) {
       const result = LocalStorageUtils.getCacheItem<Array<T>>(this.localKey);
       if (result) {

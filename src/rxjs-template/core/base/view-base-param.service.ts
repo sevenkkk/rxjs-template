@@ -1,6 +1,5 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ViewStateService } from './view-state.service';
-import { ResponseBody } from '../../model/response-body.model';
 
 export abstract class ViewBaseParamService<P extends { page?: number, pageSize?: number }> extends ViewStateService {
 
@@ -27,12 +26,12 @@ export abstract class ViewBaseParamService<P extends { page?: number, pageSize?:
   /**
    * 定义api请求
    */
-  abstract prepare(): Observable<ResponseBody>;
+  abstract prepare(): Observable<any>;
 
   /**
    * 清理请求参数
    */
-  clear() {
+  clear(): void {
     this._params$.next({} as P);
   }
 

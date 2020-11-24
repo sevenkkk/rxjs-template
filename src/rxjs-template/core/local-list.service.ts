@@ -17,7 +17,7 @@ export class LocalListService<T> {
     return this._list$.asObservable();
   }
 
-  get list() {
+  get list(): Array<T> {
     return this._list$.value;
   }
 
@@ -49,14 +49,14 @@ export class LocalListService<T> {
     );
   }
 
-  get localList() {
+  get localList(): Array<T> {
     return LocalStorageUtils.getItem<Array<T>>(this.localKey);
   }
 
   /**
    * 清空数据
    */
-  clear() {
+  clear(): void {
     if (this.localKey) {
       LocalStorageUtils.removeItem(this.localKey);
     }
@@ -67,7 +67,7 @@ export class LocalListService<T> {
   /**
    * 设置初始化数据
    */
-  private setInitData() {
+  private setInitData(): void {
     if (this.localKey) {
       const result = this.localList;
       if (result) {

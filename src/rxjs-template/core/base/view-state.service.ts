@@ -1,9 +1,8 @@
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { ViewState } from '../../model/view-state.model';
-import { ResponseBody, UseResult } from '../../model/response-body.model';
-import { EventBusService, UN_AUTHORIZED_EXCEPTION } from '../../utils/event-bus.service';
+import { UseResult } from '../../model/use-result.model';
+import { RxjsTempConfigService } from '../../rxjs-temp-config.service';
 
 export abstract class ViewStateService {
 
@@ -13,7 +12,7 @@ export abstract class ViewStateService {
   private _state$ = new BehaviorSubject<ViewState>(ViewState.idle);
   private _isError$ = new BehaviorSubject<boolean>(false);
 
-  get errorMessage$() {
+  get errorMessage$(): Observable<string> {
     return this._errorMessage.asObservable();
   }
 
@@ -21,7 +20,7 @@ export abstract class ViewStateService {
     this._errorMessage.next(_errorMessage);
   }
 
-  get errorMessage() {
+  get errorMessage(): string {
     return this._errorMessage.getValue();
   }
 
@@ -37,29 +36,29 @@ export abstract class ViewStateService {
     this._isError$.next(isError);
   }
 
-  setState(state: ViewState) {
+  setState(state: ViewState): void {
     this._state$.next(state);
   }
 
-  start() {
+  start(): void {
     this.setState(ViewState.busy);
   }
 
-  end() {
+  end(): void {
     this.setState(ViewState.idle);
     this.isError = false;
   }
 
-  error() {
+  error(): void {
     this.setState(ViewState.error);
     this.isError = true;
   }
 
-  empty() {
+  empty(): void {
     this.setState(ViewState.empty);
   }
 
-  resetState() {
+  resetState(): void {
     this.setState(ViewState.idle);
   }
 
@@ -88,31 +87,19 @@ export abstract class ViewStateService {
     return this.isError$;
   }
 
-  unAuthorized() {
-    this.setState(ViewState.unAuthorized);
-    this.onUnAuthorizedException();
-  }
-
-  /// 未授权的回调
-  onUnAuthorizedException() {
-    EventBusService.emit(UN_AUTHORIZED_EXCEPTION);
-  }
-
   /**
    * 请求api
    * @param ob 请求体
    * @param errorCallback 错误回调
    */
-  doFetch<T>(ob: Observable<ResponseBody>, errorCallback = null): Observable<UseResult<T>> {
+  doFetch<T>(ob: Observable<any>, errorCallback = null): Observable<UseResult<T>> {
     this.start();
     return ob.pipe(
       map((item) => {
-        return {
-          success: true,
-          data: item.payload,
-          totalCount: item.count ? item.count : 0,
-          errorCode: item.errorCode,
-        };
+        if (!RxjsTempConfigService.config?.handleHttpResult) {
+          throw Error('必须指定 RxjsTempConfigService.config.handleHttpResult');
+        }
+        return ({success: true, ...(RxjsTempConfigService.config?.handleHttpResult<T>(item) || {})});
       }),
       tap(() => this.end()),
       catchError((err) => this.handleError(err, (errorMessage: string) => of({
@@ -122,33 +109,15 @@ export abstract class ViewStateService {
     );
   }
 
-  handleError<R>(error: any, returnCallback: (errorMessage: string) => Observable<R>, errorCallback, state = true): Observable<R> {
-    this.errorMessage = '网络请求发送失败';
-    console.log(error);
-    if (error instanceof HttpErrorResponse) {
-      switch (error.status) {
-        case 400:
-          this.errorMessage = error.error.errorMessage;
-          if (state) {
-            this.error();
-          }
-          break;
-        case 403:
-          this.errorMessage = error.error.errorMessage;
-          if (state) {
-            this.error();
-          }
-          break;
-        case 401:
-          this.unAuthorized();
-          break;
-        default:
-          if (state) {
-            this.error();
-          }
-          break;
-      }
-    }
+  /**
+   * 异常处理
+   * @param error 错误
+   * @param returnCallback 返回
+   * @param errorCallback 错误回调
+   */
+  handleError<R>(error: any, returnCallback: (errorMessage: string) => Observable<R>, errorCallback): Observable<R> {
+    this.errorMessage = RxjsTempConfigService.config?.handleHttpError(error,
+      (state: ViewState | any) => this.setState(state)) || RxjsTempConfigService.config.errorMessage;
     if (errorCallback) {
       errorCallback();
     }

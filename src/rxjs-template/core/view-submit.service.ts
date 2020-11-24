@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { UseResult } from '../model/response-body.model';
+import { UseResult } from '../model/use-result.model';
 import { ViewBaseObjectService } from './base/view-base-object.service';
 
 export abstract class ViewSubmitService<P, T> extends ViewBaseObjectService<P, T> {

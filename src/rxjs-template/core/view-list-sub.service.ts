@@ -11,7 +11,7 @@ export abstract class ViewListSubService<P, T, S> extends ViewListService <P, T>
     this._subIndex$.next(index);
   }
 
-  get subIndex() {
+  get subIndex(): number {
     return this._subIndex$.getValue();
   }
 

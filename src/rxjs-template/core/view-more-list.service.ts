@@ -1,6 +1,6 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { delay, map, tap, withLatestFrom } from 'rxjs/operators';
-import { UseResult } from '../model/response-body.model';
+import { UseResult } from '../model/use-result.model';
 import { ViewBaseListService } from './base/view-base-list.service';
 
 export abstract class ViewMoreListService<P, T> extends ViewBaseListService<P, T> {
@@ -14,7 +14,7 @@ export abstract class ViewMoreListService<P, T> extends ViewBaseListService<P, T
     this.params = {pageSize: this.pageSize};
   }
 
-  get pageSize() {
+  get pageSize(): number {
     return this._pageSize;
   }
 
@@ -24,7 +24,7 @@ export abstract class ViewMoreListService<P, T> extends ViewBaseListService<P, T
     this.params = {page: this.page};
   }
 
-  get page() {
+  get page(): number {
     return this._page;
   }
 
@@ -79,7 +79,7 @@ export abstract class ViewMoreListService<P, T> extends ViewBaseListService<P, T
   }
 
 
-  get totalCount() {
+  get totalCount(): number {
     return this._totalCount$.value;
   }
 
@@ -158,7 +158,7 @@ export abstract class ViewMoreListService<P, T> extends ViewBaseListService<P, T
    * @param list 当前请求数据
    * @param oldList 之前的数据
    */
-  private setList(list: Array<T>, oldList: Array<T> = null) {
+  private setList(list: Array<T>, oldList: Array<T> = null): void {
     let newList = list;
     if (oldList) {
       newList = [...oldList, ...list];
@@ -172,7 +172,7 @@ export abstract class ViewMoreListService<P, T> extends ViewBaseListService<P, T
    * 加载成功回调
    * @param data 返回数据
    */
-  onFetchSuccess(data: Array<T>) {
+  onFetchSuccess(data: Array<T>): void {
     super.onFetchSuccess(data);
     if (data.length === 0) {
       this.empty();

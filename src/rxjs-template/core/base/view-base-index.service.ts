@@ -10,7 +10,7 @@ export abstract class ViewBaseIndexService<T> {
     this._index$.next(index);
   }
 
-  get index() {
+  get index(): number {
     return this._index$.value;
   }
 

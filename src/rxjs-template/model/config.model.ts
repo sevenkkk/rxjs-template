@@ -1,16 +1,8 @@
-export interface ResponseBody {
-  success: boolean;
-  errorCode?: number;
-  errorMessage?: string;
-  payload?: any;
-  totalPage?: number;
-  count?: number;
-}
+import { UseResult } from './use-result.model';
+import { ViewState } from './view-state.model';
 
-export interface UseResult<T> {
-  success: boolean;
-  data?: T;
+export interface ConfigModel {
   errorMessage?: string;
-  totalCount?: number;
-  errorCode?: number;
+  handleHttpError?: (error: any, errorCallback: (state: ViewState | any) => void) => string;
+  handleHttpResult?: <T>(resBody: any) => UseResult<T>;
 }

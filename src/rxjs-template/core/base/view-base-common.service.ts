@@ -1,6 +1,7 @@
 import { ViewBaseParamService } from './view-base-param.service';
 import { tap } from 'rxjs/operators';
-import { UseResult } from '../../model/response-body.model';
+import { UseResult } from '../../model/use-result.model';
+import { Observable } from 'rxjs';
 
 export abstract class ViewBaseCommonService<P> extends ViewBaseParamService<P> {
 
@@ -43,11 +44,11 @@ export abstract class ViewBaseCommonService<P> extends ViewBaseParamService<P> {
     this._localKey = localKey;
   }
 
-  get localKey() {
+  get localKey(): string {
     return this._localKey;
   }
 
-  fetch<T>(setData: (data: T) => void, params?: P) {
+  fetch<T>(setData: (data: T) => void, params?: P): Observable<UseResult<T>> {
     this.params = params;
     return this.doFetch<T>(this.prepare()).pipe(tap((res) => {
       const {success, data, errorMessage, errorCode} = res;
@@ -68,7 +69,7 @@ export abstract class ViewBaseCommonService<P> extends ViewBaseParamService<P> {
   /**
    * 是否过期
    */
-  isExpires() {
+  isExpires(): boolean {
     const now = new Date().getTime();
     return now - this.startTime >= this.expires;
   }
@@ -77,7 +78,7 @@ export abstract class ViewBaseCommonService<P> extends ViewBaseParamService<P> {
    * 请求成功回调
    * @param data 返回值
    */
-  onFetchSuccess(data: any) {
+  onFetchSuccess(data: any): void {
     console.log('Response Data=> ', data);
   }
 
@@ -85,7 +86,7 @@ export abstract class ViewBaseCommonService<P> extends ViewBaseParamService<P> {
    * 请求失败回调
    * @param errorMessage 返回错误信息
    */
-  onFetchFail(errorMessage?: string) {
+  onFetchFail(errorMessage?: string): void {
     if (errorMessage) {
       console.log('Response Error=> ', errorMessage);
     }
@@ -95,7 +96,7 @@ export abstract class ViewBaseCommonService<P> extends ViewBaseParamService<P> {
    * 请求完成回调
    * @param res 返回值
    */
-  onFetchComplete(res: UseResult<any>) {
+  onFetchComplete(res: UseResult<any>): void {
 
   }
 

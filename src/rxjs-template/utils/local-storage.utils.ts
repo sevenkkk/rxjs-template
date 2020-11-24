@@ -7,7 +7,7 @@ export class LocalStorageUtils {
    * @param key key值
    * @param data 对象
    */
-  static setItem<T>(key: string, data: T) {
+  static setItem<T>(key: string, data: T): void {
     localStorage.setItem(`${key}-${this.version}`, JSON.stringify(data));
   }
 
@@ -17,7 +17,7 @@ export class LocalStorageUtils {
    * @param data 对象
    * @param startTime 过期时间
    */
-  static setCacheItem<T>(key: string, data: T, startTime?: number) {
+  static setCacheItem<T>(key: string, data: T, startTime?: number): void {
     const cacheObj: CacheObj<T> = {data, startTime: new Date().getTime()};
     localStorage.setItem(`${key}-${this.version}`, JSON.stringify(cacheObj));
   }
@@ -50,14 +50,14 @@ export class LocalStorageUtils {
    * 移除单个缓存
    * @param key key
    */
-  static removeItem(key: string) {
+  static removeItem(key: string): void {
     localStorage.removeItem(`${key}-${this.version}`);
   }
 
   /**
    * 清理缓存
    */
-  static clear() {
+  static clear(): void {
     localStorage.clear();
   }
 

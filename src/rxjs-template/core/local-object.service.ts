@@ -16,7 +16,7 @@ export class LocalObjectService<T> {
     return this._target$.asObservable();
   }
 
-  get target() {
+  get target(): T {
     return this._target$.value;
   }
 
@@ -30,7 +30,7 @@ export class LocalObjectService<T> {
   /**
    * 清空数据
    */
-  clear() {
+  clear(): void {
     if (this.localKey) {
       LocalStorageUtils.removeItem(this.localKey);
     }
@@ -41,7 +41,7 @@ export class LocalObjectService<T> {
   /**
    * 设置初始化数据
    */
-  private setInitData() {
+  private setInitData(): void {
     if (this.localKey) {
       const result = LocalStorageUtils.getItem<T>(this.localKey);
       if (result) {

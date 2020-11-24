@@ -1,5 +1,5 @@
 import { Observable, of } from 'rxjs';
-import { UseResult } from '../model/response-body.model';
+import { UseResult } from '../model/use-result.model';
 import { ViewBaseObjectService } from './base/view-base-object.service';
 import { take } from 'rxjs/operators';
 
@@ -25,7 +25,7 @@ export abstract class ViewObjectService<P, T> extends ViewBaseObjectService<P, T
    * 发送请求
    * @param params 参数
    */
-  private request(params?: P) {
+  private request(params?: P): Observable<UseResult<T>> {
     return this.fetch<T>((data) => this.data = data, params);
   }
 }
