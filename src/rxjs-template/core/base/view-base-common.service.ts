@@ -34,24 +34,10 @@ export abstract class ViewBaseCommonService<P> extends ViewBaseParamService<P> {
     return this._startTime;
   }
 
-  private _localKey: string;
-
-  /**
-   * 设置本地存储
-   * @param localKey key值
-   */
-  set localKey(localKey: string) {
-    this._localKey = localKey;
-  }
-
-  get localKey(): string {
-    return this._localKey;
-  }
-
   fetch<T>(setData: (data: T) => void, params?: P): Observable<UseResult<T>> {
     this.params = params;
     return this.doFetch<T>(this.prepare()).pipe(tap((res) => {
-      const {success, data, errorMessage, errorCode} = res;
+      const {success, data, errorMessage} = res;
       if (success) {
         if (this._isDefaultSet) {
           if (data != null) {

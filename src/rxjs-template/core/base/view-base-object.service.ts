@@ -7,6 +7,22 @@ export abstract class ViewBaseObjectService<P, T> extends ViewBaseCommonService<
 
   // 默认值
   private _defaultValue: T;
+
+  private _localKey: string;
+
+  /**
+   * 设置本地存储
+   * @param localKey key值
+   */
+  set localKey(localKey: string) {
+    this._localKey = localKey;
+    this._data$.next(this.getLocalData());
+  }
+
+  get localKey(): string {
+    return this._localKey;
+  }
+
   // 数据
   private _data$ = new BehaviorSubject<T>(undefined);
 
@@ -30,7 +46,6 @@ export abstract class ViewBaseObjectService<P, T> extends ViewBaseCommonService<
   protected constructor() {
     super();
     this.initialize();
-    this._data$.next(this.getLocalData());
   }
 
   // 初始化数据
