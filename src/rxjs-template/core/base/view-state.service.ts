@@ -117,7 +117,7 @@ export abstract class ViewStateService {
    */
   handleError<R>(error: any, returnCallback: (errorMessage: string) => Observable<R>, errorCallback): Observable<R> {
     this.errorMessage = RxjsTempConfigService.config?.handleHttpError(error,
-      (state: ViewState | any) => this.setState(state)) || RxjsTempConfigService.config.errorMessage;
+      () => this.error()) || RxjsTempConfigService.config.errorMessage;
     if (errorCallback) {
       errorCallback();
     }

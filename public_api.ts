@@ -5,6 +5,7 @@ export * from './src/rxjs-template/core/view-object.service';
 export * from './src/rxjs-template/core/view-submit.service';
 export * from './src/rxjs-template/core/local-list.service';
 export * from './src/rxjs-template/core/base/view-base-index.service';
+export * from './src/rxjs-template/core/base/view-state.service';
 
 export * from './src/rxjs-template/core/local-object.service';
 export * from './src/rxjs-template/model/use-result.model';

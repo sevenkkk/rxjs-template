@@ -25,6 +25,14 @@ export abstract class ViewObjectService<P, T> extends ViewBaseObjectService<P, T
   }
 
   /**
+   * 刷新
+   */
+  refresh(): Observable<UseResult<T>>{
+    return this.request();
+  }
+
+
+  /**
    * 发送请求
    * @param params 参数
    */
