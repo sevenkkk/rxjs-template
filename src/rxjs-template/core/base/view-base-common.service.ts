@@ -2,6 +2,7 @@ import { ViewBaseParamService } from './view-base-param.service';
 import { tap } from 'rxjs/operators';
 import { UseResult } from '../../model/use-result.model';
 import { Observable } from 'rxjs';
+import { RxjsTempConfigService } from '../../rxjs-temp-config.service';
 
 export abstract class ViewBaseCommonService<P> extends ViewBaseParamService<P> {
 
@@ -65,7 +66,7 @@ export abstract class ViewBaseCommonService<P> extends ViewBaseParamService<P> {
    * @param data 返回值
    */
   onFetchSuccess(data: any): void {
-    console.log('Response Data=> ', data);
+    RxjsTempConfigService.showLog(`【 ${this.constructor.name} 】Response Data => `, data);
   }
 
   /**
@@ -74,7 +75,7 @@ export abstract class ViewBaseCommonService<P> extends ViewBaseParamService<P> {
    */
   onFetchFail(errorMessage?: string): void {
     if (errorMessage) {
-      console.log('Response Error=> ', errorMessage);
+      RxjsTempConfigService.showErrorLog(`【 ${this.constructor.name} 】Response Error => `, errorMessage);
     }
   }
 

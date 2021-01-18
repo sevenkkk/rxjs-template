@@ -8,6 +8,8 @@ export interface ConfigModel {
   localVersion?: number;
   // 系统错误消息
   errorMessage?: string;
+  // 是否显示log
+  showLog?: boolean;
   // 处理异常请求
   handleHttpError?: (error: any, errorCallback: () => void) => string;
   // 处理正常请求
