@@ -11,7 +11,7 @@ export interface ConfigModel {
   // 是否显示log
   showLog?: boolean;
   // 处理异常请求
-  handleHttpError?: (error: any, errorCallback: () => void) => string;
+  handleHttpError?: (error: any, errorCallback: () => void) => {errorMessage, errorCode};
   // 处理正常请求
   handleHttpResult?: <T>(resBody: any) => UseResult<T>;
 }

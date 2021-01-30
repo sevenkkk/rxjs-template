@@ -41,9 +41,7 @@ export abstract class ViewBaseCommonService<P> extends ViewBaseParamService<P> {
       const {success, data, errorMessage} = res;
       if (success) {
         if (this._isDefaultSet) {
-          if (data != null) {
-            setData(data);
-          }
+          setData(data);
         }
         this.onFetchSuccess(data);
       } else {

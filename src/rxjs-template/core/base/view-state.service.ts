@@ -102,8 +102,9 @@ export abstract class ViewStateService {
         return ({success: true, ...(RxjsTempConfigService.config?.handleHttpResult<T>(item) || {})});
       }),
       tap(() => this.end()),
-      catchError((err) => this.handleError(err, (errorMessage: string) => of({
+      catchError((err) => this.handleError(err, (errorMessage: string, errorCode: number) => of({
         success: false,
+        errorCode,
         errorMessage,
       }), errorCallback)),
     );
@@ -115,13 +116,14 @@ export abstract class ViewStateService {
    * @param returnCallback 返回
    * @param errorCallback 错误回调
    */
-  handleError<R>(error: any, returnCallback: (errorMessage: string) => Observable<R>, errorCallback): Observable<R> {
-    this.errorMessage = RxjsTempConfigService.config?.handleHttpError(error,
-      () => this.error()) || RxjsTempConfigService.config.errorMessage;
+  handleError<R>(error: any, returnCallback: (errorMessage: string, errorCode: number) => Observable<R>, errorCallback): Observable<R> {
+    const {errorCode, errorMessage} = RxjsTempConfigService.config?.handleHttpError(error,
+      () => this.error()) || {errorMessage: RxjsTempConfigService.config.errorMessage, errorCode: 500};
+    this.errorMessage = errorMessage;
     if (errorCallback) {
       errorCallback();
     }
-    return returnCallback(this.errorMessage);
+    return returnCallback(this.errorMessage, errorCode);
   }
 
 }
