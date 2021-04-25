@@ -1,6 +1,7 @@
 export * from './src/rxjs-template/core/view-list.service';
 export * from './src/rxjs-template/core/view-list-sub.service';
 export * from './src/rxjs-template/core/view-more-list.service';
+export * from './src/rxjs-template/core/view-page-list.service';
 export * from './src/rxjs-template/core/view-object.service';
 export * from './src/rxjs-template/core/view-submit.service';
 export * from './src/rxjs-template/core/local-list.service';
