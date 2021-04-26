@@ -78,10 +78,10 @@ export abstract class ViewPageListService<P, T> extends ViewBaseListService<P, T
    * 加载
    */
   loadData(params?: P): Observable<UseResult<Array<T>>> {
-    const _params = {...this.params, page: this.page, pageSize: this.pageSize};
+    this.params = {...this.params, page: this.page, pageSize: this.pageSize};
     // @ts-ignore
     if (params) {
-      this.params = {..._params, ...params};
+      this.params = {...this.params, ...params};
     }
     return this.doFetch<Array<T>>(this.prepare()).pipe(
       tap((res) => {
