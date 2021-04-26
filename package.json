@@ -1,6 +1,6 @@
 {
   "name": "rxjs-template",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "scripts": {
     "packagr": "ng-packagr -p ng-package.json"
   },

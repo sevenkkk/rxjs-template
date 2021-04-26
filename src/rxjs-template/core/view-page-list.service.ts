@@ -63,7 +63,7 @@ export abstract class ViewPageListService<P, T> extends ViewBaseListService<P, T
    * 分页加载
    * @param pageParams 分页条件
    */
-  loadDataByPage(pageParams: { page: number, pageSize: number }): Observable<UseResult<Array<T>>> {
+  loadDataByPage(pageParams: { page?: number, pageSize?: number }): Observable<UseResult<Array<T>>> {
     const {page, pageSize} = pageParams;
     if (page) {
       this.page = page;
