@@ -8,35 +8,32 @@ import { ViewBaseListService } from './base/view-base-list.service';
  */
 export abstract class ViewPageListService<P, T> extends ViewBaseListService<P, T> {
 
-  private _page = 1;
-  private _pageSize = 10;
+  private _totalCount$ = new BehaviorSubject<number>(0);
+  private _page$ = new BehaviorSubject<number>(1);
+  private _pageSize$ = new BehaviorSubject<number>(10);
+
+  get pageSize$(): Observable<number> {
+    return this._pageSize$.asObservable();
+  }
 
   set pageSize(pageSize: number) {
-    this._pageSize = pageSize;
-    // @ts-ignore
-    this.params = {pageSize: this.pageSize};
+    this._pageSize$.next(pageSize);
   }
 
   get pageSize(): number {
-    return this._pageSize;
+    return this._pageSize$.getValue();
+  }
+
+  get page$(): Observable<number> {
+    return this._page$.asObservable();
   }
 
   set page(page: number) {
-    this._page = page;
-    // @ts-ignore
-    this.params = {page: this.page};
+    this._page$.next(page);
   }
 
   get page(): number {
-    return this._page;
-  }
-
-  private _totalCount$ = new BehaviorSubject<number>(0);
-
-  protected constructor() {
-    super();
-    // @ts-ignore
-    this.params = {page: this.page, pageSize: this.pageSize};
+    return this._page$.getValue();
   }
 
   /**
@@ -56,6 +53,25 @@ export abstract class ViewPageListService<P, T> extends ViewBaseListService<P, T
    */
   get totalCount$(): Observable<number> {
     return this._totalCount$.asObservable();
+  }
+
+  protected constructor() {
+    super();
+  }
+
+  /**
+   * 分页加载
+   * @param pageParams 分页条件
+   */
+  loadDataByPage(pageParams: { page: number, pageSize: number }): Observable<UseResult<Array<T>>> {
+    const {page, pageSize} = pageParams;
+    if (page) {
+      this.page = page;
+    }
+    if (pageSize) {
+      this.pageSize = pageSize;
+    }
+    return this.loadData();
   }
 
   /**
