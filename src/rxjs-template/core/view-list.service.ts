@@ -36,7 +36,7 @@ export abstract class ViewListService<P, T> extends ViewBaseListService<P, T> {
    * 刷新
    */
   refresh(): Observable<UseResult<Array<T>>> {
-    return this.loadData();
+    return this.request();
   }
 
   /**
