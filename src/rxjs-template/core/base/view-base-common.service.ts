@@ -1,5 +1,5 @@
 import { ViewBaseParamService } from './view-base-param.service';
-import { tap } from 'rxjs/operators';
+import { debounceTime, tap } from 'rxjs/operators';
 import { UseResult } from '../../model/use-result.model';
 import { Observable } from 'rxjs';
 import { RxjsTempConfigService } from '../../rxjs-temp-config.service';
@@ -37,18 +37,19 @@ export abstract class ViewBaseCommonService<P> extends ViewBaseParamService<P> {
 
   fetch<T>(setData: (data: T) => void, params?: P): Observable<UseResult<T>> {
     this.params = params;
-    return this.doFetch<T>(this.prepare()).pipe(tap((res) => {
-      const {success, data, errorMessage} = res;
-      if (success) {
-        if (this._isDefaultSet) {
-          setData(data);
+    return this.doFetch<T>(this.prepare().pipe(debounceTime(500))).pipe(
+      tap((res) => {
+        const {success, data, errorMessage} = res;
+        if (success) {
+          if (this._isDefaultSet) {
+            setData(data);
+          }
+          this.onFetchSuccess(data);
+        } else {
+          this.onFetchFail(errorMessage);
         }
-        this.onFetchSuccess(data);
-      } else {
-        this.onFetchFail(errorMessage);
-      }
-      this.onFetchComplete(res);
-    }));
+        this.onFetchComplete(res);
+      }));
   }
 
   /**
